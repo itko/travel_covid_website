@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Can I Go There?</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="assets/css/query.css">
+    <link rel="stylesheet" href="assets/css/response.css">
+    <link rel="stylesheet" href="assets/css/typahead.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Comfortaa&family=Roboto&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class='query navbar'>
+        <form id='fromto' action="./od.html">
+            <div class='column title_wrapper'>
+                <a href='./'>
+                    <span class="title">
+                        Flight</br>&nbsp;&nbsp;&nbsp;Checker
+                    </span>
+                </a>
+            </div>
+            <div class='from column'>
+                <div id="prefetch">
+                    <input id='input_from' class="typeahead" type="text" name='from' placeholder="From">
+                </div>
+            </div>
+            <div class='to column'>
+                <div id="prefetch">
+                    <input id='input_to' class="typeahead" type="text" name='to' placeholder="To">
+                </div>
+            </div>
+            <div class='column'>
+                <input class='go_btn' type="submit" value="Check">
+            </div>
+        </form>
+    </div>
+
+    <div class='response'>
+        <div class='section_header'>
+            <p>This is what the <b>International Air Transport Association (IATA)</b> says:</p>
+        </div>
+        <div class='side_by_side'>
+
+            <div class='column iata_message'>
+                <p class='iata_header' id='origin_header'></p>
+                <div id='origin_updates' class='iata_updates'></div>
+                <div id='date_origin' class='date_published'></div>
+            </div>
+
+            <div class='column middle'></div>
+
+            <div class='column iata_message left'>
+                <p class='iata_header' id='destination_header'></p>
+                <div id='destination_updates' class='iata_updates'></div>
+                <div id='date_destination' class='date_published'></div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <script src="" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js"></script>
+    <script>
+
+        var countries = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: 'data/country_list.json'
+        });
+
+        // passing in `null` for the `options` arguments will result in the default
+        // options being used
+        $('#prefetch .typeahead').typeahead(null, {
+            source: countries
+        });
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var origin = urlParams.get('from');
+        var destination = urlParams.get('to');
+
+        $.getJSON(`https://us-central1-travel-covid.cloudfunctions.net/get_iata_info?country=${destination}`, function (data) {
+            $('#destination_header').text(`Can you go to ${destination}?`)
+            $('#destination_updates').empty().append(data.message)
+            date_published = `No changes since ${data.date_published}`
+            $('#date_destination').append(date_published)
+        })
+        $.getJSON(`https://us-central1-travel-covid.cloudfunctions.net/get_iata_info?country=${origin}`, function (data) {
+            $('#origin_header').text(`Can you come back to ${origin}?`)
+            $('#origin_updates').empty().append(data.message)
+            date_published = `No changes since ${data.date_published}`
+            $('#date_origin').append(date_published)
+        })
+
+    </script>
+</body>
+
+</html>

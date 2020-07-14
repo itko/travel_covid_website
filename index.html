@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Can I Go There?</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="assets/css/query.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
+    <link rel="stylesheet" href="assets/css/typahead.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Comfortaa&family=Roboto&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class='landing'>
+        <span class="title">
+            COVID Flight Checker
+        </span>
+        <div class="spacing"></div>
+        <span class="subtitle">
+            Check what countries you can fly to right now. Hourly updates from around the world.
+        </span>
+        <div class='query'>
+            <form id='fromto' action="./od.html">
+                <div class='from column'>
+                    <div id="prefetch">
+                        <input id='input_from' class="typeahead" type="text" name='from' placeholder="From">
+                    </div>
+                </div>
+                <div class='to column'>
+                    <div id="prefetch">
+                        <input id='input_to' class="typeahead" type="text" name='to' placeholder="To">
+                    </div>
+                </div>
+                <div class='column'>
+                    <input class='go_btn' type="submit" value="Check">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <script src="" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="http://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js"></script>
+    <script>
+
+        var countries = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: 'data/country_list.json'
+        });
+
+        $('#prefetch .typeahead').typeahead(null, {
+            source: countries
+        });
+
+    </script>
+</body>
+
+</html>

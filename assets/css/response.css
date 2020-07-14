@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+}
+
+.title_wrapper {
+    margin-right: 50px;
+}
+
+.title_wrapper a, a:visited, a:hover, a:active {
+    color: black;
+    text-decoration: none;
+}
+
+.title {
+    font-weight: 900;
+    font-family: 'Comfortaa', cursive;
+    font-size: 20px;
+    line-height: 25px;
+    vertical-align: middle;
+}
+
+
+
+.navbar {
+    position: relative;
+    box-sizing: border-box;
+    box-shadow: 0 1px 3px rgba(60,64,67, 0.3), 0 2px 8px 0px rgba(60,64,67, 0.15);
+    z-index: 100;
+}
+
+.response {
+    width: 100%;
+    margin: auto;
+    padding: 30px;
+    padding-top: 50px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.side_by_side {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.side_by_side .middle{
+   width: 50px;
+   height: 20px
+}
+
+.side_by_side .column {
+}
+
+.section_header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 10px
+}
+
+.section_header p{
+    font-size: 24px;
+    font-family: 'Open Sans',sans-serif;
+    font-weight: 100;
+    color: hsl(203, 27%, 57%);
+    margin: 0;
+}
+
+.iata_message {
+    width: 400px;
+    max-width: 100%;
+    padding: 30px;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(60,64,67, 0.3), 0 2px 8px 0px rgba(60,64,67, 0.15);
+}
+
+.iata_header {
+    margin-top: 0;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.iata_updates {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    overflow-wrap: break-word;
+    font-weight: 100;
+    color: gray;
+}
+
+.iata_message .date_published {
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    overflow-wrap: break-word;
+    font-weight: 100;
+    color: rgb(161, 161, 161);
+    text-align: right;
+}
+
+.iata_message .bullet{
+    display: inline;
+    font-weight: 400;
+    color: black;
+}
+
+.iata_message .bullet::before {
+    content:"\a";
+    white-space: pre;
+}
+
+.iata_message .first::before{
+    content:"";
+    white-space: pre;
+}

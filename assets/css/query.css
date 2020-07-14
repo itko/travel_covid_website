@@ -1,0 +1,24 @@
+.query {
+    padding: 30px;
+    background-color: white;
+}
+
+.query #fromto{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.query .column {
+    padding: 5px;
+}
+
+.go_btn {
+    width: 80px;
+    min-height: 40px;
+    height: 100%;
+    margin-left: 10px;
+    background-color: rgb(175, 209, 231);
+    border-radius: 8px;
+    border: 0px solid rgb(235, 235, 235);
+}
