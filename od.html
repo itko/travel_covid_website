@@ -18,6 +18,16 @@
     <link rel="stylesheet" href="assets/css/typahead.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Comfortaa&family=Roboto&display=swap"
         rel="stylesheet">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97552826-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-97552826-3');
+    </script>
 </head>
 
 <body>
@@ -27,7 +37,7 @@
             <div class='column title_wrapper'>
                 <a href='./'>
                     <span class="title">
-                        Flight</br>&nbsp;&nbsp;&nbsp;Checker
+                        Flight</br>&nbsp;&nbsp;&nbsp;Restrictions
                     </span>
                 </a>
             </div>
@@ -48,25 +58,30 @@
     </div>
 
     <div class='response'>
-        <div class='section_header'>
-            <p>This is what the <b>International Air Transport Association (IATA)</b> says:</p>
-        </div>
-        <div class='side_by_side'>
-
-            <div class='column iata_message'>
-                <p class='iata_header' id='origin_header'></p>
-                <div id='origin_updates' class='iata_updates'></div>
-                <div id='date_origin' class='date_published'></div>
+        <div class="section">
+            <div class='section_header'>
+                <p>This is what the <b>International Air Transport Association (IATA)</b> says:</p>
             </div>
+            <div class='side_by_side'>
 
-            <div class='column middle'></div>
+                <div class='column iata_message'>
+                    <p class='iata_header' id='origin_header'></p>
+                    <div id='origin_updates' class='iata_updates'></div>
+                    <div id='date_origin' class='date_published'></div>
+                </div>
 
-            <div class='column iata_message left'>
-                <p class='iata_header' id='destination_header'></p>
-                <div id='destination_updates' class='iata_updates'></div>
-                <div id='date_destination' class='date_published'></div>
+                <div class='column middle'></div>
+
+                <div class='column iata_message left'>
+                    <p class='iata_header' id='destination_header'></p>
+                    <div id='destination_updates' class='iata_updates'></div>
+                    <div id='date_destination' class='date_published'></div>
+                </div>
+
             </div>
-
+            <div class='disclaimer'>
+                <a href="https://www.iatatravelcentre.com/">Data is based on IATA restrictions</a>
+            </div>
         </div>
     </div>
 
@@ -79,6 +94,9 @@
     <script src="" async defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-firestore.js"></script>
     <script>
 
         var countries = new Bloodhound({
@@ -95,20 +113,72 @@
 
         var urlParams = new URLSearchParams(window.location.search);
         var origin = urlParams.get('from');
+        
         var destination = urlParams.get('to');
+        $('#destination_header').text(`Can you go to ${destination}?`)
 
-        $.getJSON(`https://us-central1-travel-covid.cloudfunctions.net/get_iata_info?country=${destination}`, function (data) {
-            $('#destination_header').text(`Can you go to ${destination}?`)
-            $('#destination_updates').empty().append(data.message)
-            date_published = `No changes since ${data.date_published}`
-            $('#date_destination').append(date_published)
-        })
-        $.getJSON(`https://us-central1-travel-covid.cloudfunctions.net/get_iata_info?country=${origin}`, function (data) {
+        if (origin != '') {
             $('#origin_header').text(`Can you come back to ${origin}?`)
-            $('#origin_updates').empty().append(data.message)
-            date_published = `No changes since ${data.date_published}`
-            $('#date_origin').append(date_published)
-        })
+        }
+
+        if (destination != '') {
+            $('#destination_header').text(`Can you go to ${destination}?`)
+        }
+
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCV3H5w_kQ72C-x44ZhGR0vzllaRgRhxVI",
+            authDomain: "travel-covid.firebaseapp.com",
+            databaseURL: "https://travel-covid.firebaseio.com",
+            projectId: "travel-covid",
+            storageBucket: "travel-covid.appspot.com",
+            messagingSenderId: "98791154155",
+            appId: "1:98791154155:web:2e9e65099b513e7414f9ae"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().signInAnonymously().catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+        });
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var isAnonymous = user.isAnonymous;
+                var uid = user.uid;
+            } else {
+                // User is signed out.
+            }
+        });
+
+        var db = firebase.firestore();
+        db.collection("countries").doc(destination).get().then(function (doc) {
+            if (doc.exists) {
+                $('#destination_updates').empty().append(doc.data().message)
+                date_published = `No changes since ${doc.data().date_f}`
+                $('#date_destination').append(date_published)
+            } else {
+                // doc.data() will be undefined in this case
+                $('#destination_updates').text(`Invalid request. Double check your input and try again.`)
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
+        db.collection("countries").doc(origin).get().then(function (doc) {
+            if (doc.exists) {
+                $('#origin_updates').empty().append(doc.data().message)
+                date_published = `No changes since ${doc.data().date_f}`
+                $('#date_origin').append(date_published)
+            } else {
+                // doc.data() will be undefined in this case
+                $('#origin_updates').text(`Invalid request. Double check your input and try again.`)
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
 
     </script>
 </body>
