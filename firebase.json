@@ -16,6 +16,10 @@
       {
         "source": "/od",
         "function": "get_from_to_page"
+      },
+      {
+        "source": "/od.html",
+        "function": "get_from_to_page"
       }
     ]
   }
