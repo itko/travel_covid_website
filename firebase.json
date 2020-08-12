@@ -1,0 +1,22 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      ".git/**",
+      ".gitignore",
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/update_iata_info",
+        "function": "update_iata_info"
+      },
+      {
+        "source": "/od",
+        "function": "get_from_to_page"
+      }
+    ]
+  }
+}
