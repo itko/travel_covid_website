@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{origin}} to {{destination}}: Latest travel restrictions</title>
+    <meta name="description"
+        content="Can you fly from {{origin}} to {{destination}}? Check out the latest flight and travel restrictions here.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:url" content="http://covidtravelrestrictions.com" />
+    <meta property="og:title" content="{{origin}} to {{destination}}: Latest travel restrictions" />
+    <meta property="og:description"
+        content="Can you fly from {{origin}} to {{destination}}? Check out the latest flight and travel restrictions here." />
+    <meta property="og:image"
+        content="https://firebasestorage.googleapis.com/v0/b/travel-covid.appspot.com/o/cover.jpg?alt=media&token=c2cfd880-ba7c-48f7-83e6-37d40589aabc" />
+    <link rel="icon" type="image/x-icon" href="assets/images/thumb.png">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="assets/css/query.css">
+    <link rel="stylesheet" href="assets/css/response.css">
+    <link rel="stylesheet" href="assets/css/typahead.css">
+    <link rel="stylesheet" href="assets/css/sharing.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Comfortaa&family=Roboto&display=swap"
+        rel="stylesheet">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97552826-3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-97552826-3');
+    </script>
+</head>
+
+<body>
+
+    <div class='query navbar'>
+        <form id='fromto' action="./od">
+            <div class='column title_wrapper'>
+                <a href='./'>
+                    <span class="title">
+                        Flight</br>&nbsp;&nbsp;&nbsp;Restrictions
+                    </span>
+                </a>
+            </div>
+            <div class='from column'>
+                <div id="prefetch">
+                    <input id='input_from' class="typeahead" type="text" name='from' placeholder="From">
+                </div>
+            </div>
+            <div class='to column'>
+                <div id="prefetch">
+                    <input id='input_to' class="typeahead" type="text" name='to' placeholder="To">
+                </div>
+            </div>
+            <div class='column'>
+                <input class='go_btn' type="submit" value="Check">
+            </div>
+        </form>
+    </div>
+
+    <div class='response'>
+        <div class="section">
+            <div class='section_header'>
+                <p>This is what the <b>International Air Transport Association (IATA)</b> says:</p>
+            </div>
+            <div class='side_by_side'>
+
+                <div class='column iata_message'>
+                    <p class='iata_header' id='origin_header'>
+                        Can you come back to {{origin}}?
+                    </p>
+                    <div id='origin_updates' class='iata_updates'>
+                        <p class='loading_text'> Checking latest restrictions. This may take a few seconds.</p>
+                        <img class='spinner' src="./assets/images/spinner.gif">
+                    </div>
+                    <div id='date_origin' class='date_published'></div>
+                </div>
+
+                <div class='column middle'></div>
+
+                <div class='column iata_message left'>
+                    <p class='iata_header' id='destination_header'>
+                        Can you go to {{destination}}?
+                    </p>
+                    <div id='destination_updates' class='iata_updates'>
+                        <p class='loading_text'> Checking latest restrictions. This may take a few seconds.</p>
+                        <img class='spinner' src="./assets/images/spinner.gif">
+                    </div>
+                    <div id='date_destination' class='date_published'></div>
+                </div>
+
+            </div>
+            <div class='disclaimer'>
+                <a href="https://www.iatatravelcentre.com/">Data is based on IATA restrictions</a>
+            </div>
+        </div>
+    </div>
+
+    <div class='sharing'>
+
+        <!-- Sharingbutton Facebook -->
+        <a class="resp-sharing-button__link column" href="https://facebook.com/sharer/sharer.php?u={{share_link}}"
+            target="_blank" rel="noopener" aria-label="Facebook">
+            <div class="resp-sharing-button resp-sharing-button--facebook resp-sharing-button--medium">
+                <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M18.77 7.46H14.5v-1.9c0-.9.6-1.1 1-1.1h3V.5h-4.33C10.24.5 9.5 3.44 9.5 5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4z" />
+                    </svg></div>Facebook
+            </div>
+        </a>
+
+        <!-- Sharingbutton Twitter -->
+        <a class="resp-sharing-button__link column"
+            href="https://twitter.com/intent/tweet/?text={{share_text}}&amp;url={{share_link}}%2F" target="_blank"
+            rel="noopener" aria-label="Twitter">
+            <div class="resp-sharing-button resp-sharing-button--twitter resp-sharing-button--medium">
+                <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M23.44 4.83c-.8.37-1.5.38-2.22.02.93-.56.98-.96 1.32-2.02-.88.52-1.86.9-2.9 1.1-.82-.88-2-1.43-3.3-1.43-2.5 0-4.55 2.04-4.55 4.54 0 .36.03.7.1 1.04-3.77-.2-7.12-2-9.36-4.75-.4.67-.6 1.45-.6 2.3 0 1.56.8 2.95 2 3.77-.74-.03-1.44-.23-2.05-.57v.06c0 2.2 1.56 4.03 3.64 4.44-.67.2-1.37.2-2.06.08.58 1.8 2.26 3.12 4.25 3.16C5.78 18.1 3.37 18.74 1 18.46c2 1.3 4.4 2.04 6.97 2.04 8.35 0 12.92-6.92 12.92-12.93 0-.2 0-.4-.02-.6.9-.63 1.96-1.22 2.56-2.14z" />
+                    </svg></div>Twitter
+            </div>
+        </a>
+
+        <!-- Sharingbutton E-Mail -->
+        <a class="resp-sharing-button__link column" href="mailto:?subject={{share_text}}&amp;body={{share_link}}"
+            target="_blank" rel="noopener" aria-label="E-Mail">
+            <div class="resp-sharing-button resp-sharing-button--email resp-sharing-button--medium">
+                <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M22 4H2C.9 4 0 4.9 0 6v12c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM7.25 14.43l-3.5 2c-.08.05-.17.07-.25.07-.17 0-.34-.1-.43-.25-.14-.24-.06-.55.18-.68l3.5-2c.24-.14.55-.06.68.18.14.24.06.55-.18.68zm4.75.07c-.1 0-.2-.03-.27-.08l-8.5-5.5c-.23-.15-.3-.46-.15-.7.15-.22.46-.3.7-.14L12 13.4l8.23-5.32c.23-.15.54-.08.7.15.14.23.07.54-.16.7l-8.5 5.5c-.08.04-.17.07-.27.07zm8.93 1.75c-.1.16-.26.25-.43.25-.08 0-.17-.02-.25-.07l-3.5-2c-.24-.13-.32-.44-.18-.68s.44-.32.68-.18l3.5 2c.24.13.32.44.18.68z" />
+                    </svg></div>E-Mail
+            </div>
+        </a>
+
+        <!-- Sharingbutton WhatsApp -->
+        <a class="resp-sharing-button__link column" href="whatsapp://send?text={{share_text}}%20{{share_link}}"
+            target="_blank" rel="noopener" aria-label="WhatsApp">
+            <div class="resp-sharing-button resp-sharing-button--whatsapp resp-sharing-button--medium">
+                <div aria-hidden="true" class="resp-sharing-button__icon resp-sharing-button__icon--solid">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M20.1 3.9C17.9 1.7 15 .5 12 .5 5.8.5.7 5.6.7 11.9c0 2 .5 3.9 1.5 5.6L.6 23.4l6-1.6c1.6.9 3.5 1.3 5.4 1.3 6.3 0 11.4-5.1 11.4-11.4-.1-2.8-1.2-5.7-3.3-7.8zM12 21.4c-1.7 0-3.3-.5-4.8-1.3l-.4-.2-3.5 1 1-3.4L4 17c-1-1.5-1.4-3.2-1.4-5.1 0-5.2 4.2-9.4 9.4-9.4 2.5 0 4.9 1 6.7 2.8 1.8 1.8 2.8 4.2 2.8 6.7-.1 5.2-4.3 9.4-9.5 9.4zm5.1-7.1c-.3-.1-1.7-.9-1.9-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.1-.2.2-.3.2-.6.1s-1.2-.5-2.3-1.4c-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6s.3-.3.4-.5c.2-.1.3-.3.4-.5.1-.2 0-.4 0-.5C10 9 9.3 7.6 9 7c-.1-.4-.4-.3-.5-.3h-.6s-.4.1-.7.3c-.3.3-1 1-1 2.4s1 2.8 1.1 3c.1.2 2 3.1 4.9 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.3-.3-.4-.6-.5z" />
+                    </svg></div>WhatsApp
+            </div>
+        </a>
+
+    </div>
+
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <script src="" async defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-firestore.js"></script>
+    <script>
+
+        var countries = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            prefetch: 'data/country_list.json'
+        });
+
+        $('.resp-sharing-button__link').click(function () {
+            gtag('event', 'click', {
+                'event_category': 'share',
+                'event_label': $(this).attr('aria-label')
+            });
+        });
+
+        // passing in `null` for the `options` arguments will result in the default
+        // options being used
+        $('#prefetch .typeahead').typeahead(null, {
+            source: countries
+        });
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var origin = urlParams.get('from');
+        var destination = urlParams.get('to');
+
+        if (origin == '') {
+            $('#origin_header').text('')
+        }
+
+        if (destination == '') {
+            $('#destination_header').text('')
+        }
+
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCV3H5w_kQ72C-x44ZhGR0vzllaRgRhxVI",
+            authDomain: "travel-covid.firebaseapp.com",
+            databaseURL: "https://travel-covid.firebaseio.com",
+            projectId: "travel-covid",
+            storageBucket: "travel-covid.appspot.com",
+            messagingSenderId: "98791154155",
+            appId: "1:98791154155:web:2e9e65099b513e7414f9ae"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        firebase.auth().signInAnonymously().catch(function (error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+        });
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var isAnonymous = user.isAnonymous;
+                var uid = user.uid;
+
+                var db = firebase.firestore();
+                db.collection("countries").doc(destination).get().then(function (doc) {
+                    if (doc.exists) {
+                        $('#destination_updates').empty().append(doc.data().message)
+                        date_published = `No changes since ${doc.data().date_f}`
+                        $('#date_destination').append(date_published)
+                    } else {
+                        // doc.data() will be undefined in this case
+                        $('#destination_updates').text(`Invalid request. Double check your input and try again.`)
+                    }
+                }).catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+                db.collection("countries").doc(origin).get().then(function (doc) {
+                    if (doc.exists) {
+                        $('#origin_updates').empty().append(doc.data().message)
+                        date_published = `No changes since ${doc.data().date_f}`
+                        $('#date_origin').append(date_published)
+                    } else {
+                        // doc.data() will be undefined in this case
+                        $('#origin_updates').text(`Invalid request. Double check your input and try again.`)
+                    }
+                }).catch(function (error) {
+                    console.log("Error getting document:", error);
+                });
+
+            } else {
+                // User is signed out.
+            }
+        });
+
+    </script>
+</body>
+
+</html>

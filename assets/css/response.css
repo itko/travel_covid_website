@@ -130,3 +130,19 @@ body {
     color: rgb(3, 112, 155);
     text-decoration: none;
 }
+
+.spinner {
+    display: block;
+    margin: auto;
+    margin-top: 0px;
+    margin-bottom: 40px;
+}
+
+.loading_text {
+    display: block;
+    width: 80%;
+    font-size: 1em;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
