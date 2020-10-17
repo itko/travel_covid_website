@@ -9,25 +9,26 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{origin}} to {{destination}}: Latest travel restrictions</title>
+    <title>{{title}}</title>
     <meta name="description"
-        content="Can you fly from {{origin}} to {{destination}}? Get updates on the latest flight and travel restrictions.">
+        content="{{description}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:url" content="http://covidtravelrestrictions.com" />
-    <meta property="og:title" content="{{origin}} to {{destination}}: Latest travel restrictions" />
+    <meta property="og:title" content="{{title}}" />
     <meta property="og:description"
-        content="Can you fly from {{origin}} to {{destination}}? Get updates on the latest flight and travel restrictions." />
+        content="{{description}}" />
     <meta property="og:image"
         content="https://firebasestorage.googleapis.com/v0/b/travel-covid.appspot.com/o/cover.jpg?alt=media&token=c2cfd880-ba7c-48f7-83e6-37d40589aabc" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:description" content="Can you fly from {{origin}} to {{destination}}? Get updates on the latest flight and travel restrictions." />
-    <meta name="twitter:title" content="{{origin}} to {{destination}}: Latest travel restrictions" />
+    <meta name="twitter:description" content="{{description}}" />
+    <meta name="twitter:title" content="{{title}}" />
     <meta name="twitter:site" content="@travel_covid" />
     <meta name="twitter:image"
         content="https://firebasestorage.googleapis.com/v0/b/travel-covid.appspot.com/o/cover.jpg?alt=media&token=c2cfd880-ba7c-48f7-83e6-37d40589aabc" />
     <meta name="twitter:creator" content="@travel_covid" />
 
 
+    <link rel="canonical" href="{{canonical_link}}" />
     <link rel="icon" type="image/x-icon" href="assets/images/thumb.png">
     <link rel="stylesheet" href="">
     <link rel="stylesheet" href="assets/css/query.css">
@@ -176,6 +177,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.16.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase-analytics.js"></script>
     <script>
 
         var countries = new Bloodhound({
