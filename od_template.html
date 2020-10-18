@@ -8,17 +8,20 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{title}}</title>
-    <meta name="description"
-        content="{{description}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="{{canonical_link}}" />
+    <link rel="icon" type="image/x-icon" href="assets/images/thumb.png">
+
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}">
+
     <meta property="og:url" content="http://covidtravelrestrictions.com" />
     <meta property="og:title" content="{{title}}" />
-    <meta property="og:description"
-        content="{{description}}" />
+    <meta property="og:description" content="{{description}}" />
     <meta property="og:image"
         content="https://firebasestorage.googleapis.com/v0/b/travel-covid.appspot.com/o/cover.jpg?alt=media&token=c2cfd880-ba7c-48f7-83e6-37d40589aabc" />
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:description" content="{{description}}" />
     <meta name="twitter:title" content="{{title}}" />
@@ -27,9 +30,6 @@
         content="https://firebasestorage.googleapis.com/v0/b/travel-covid.appspot.com/o/cover.jpg?alt=media&token=c2cfd880-ba7c-48f7-83e6-37d40589aabc" />
     <meta name="twitter:creator" content="@travel_covid" />
 
-
-    <link rel="canonical" href="{{canonical_link}}" />
-    <link rel="icon" type="image/x-icon" href="assets/images/thumb.png">
     <link rel="stylesheet" href="">
     <link rel="stylesheet" href="assets/css/query.css">
     <link rel="stylesheet" href="assets/css/response.css">
@@ -51,8 +51,8 @@
 
 <body>
 
-    <div class='query navbar'>
-        <form id='fromto' action="./od">
+    <div class='navbar'>
+        <form id='fromto' action="./od" class='query'>
             <div class='column title_wrapper'>
                 <a href='./'>
                     <span class="title">
@@ -61,13 +61,13 @@
                 </a>
             </div>
             <div class='from column'>
-                <div id="prefetch">
-                    <input id='input_from' class="typeahead" type="text" name='from' placeholder="From">
+                <div id="input_from">
+                    <input class="typeahead" type="text" name='from' placeholder="From">
                 </div>
             </div>
             <div class='to column'>
-                <div id="prefetch">
-                    <input id='input_to' class="typeahead" type="text" name='to' placeholder="To">
+                <div id="input_to">
+                    <input class="typeahead" type="text" name='to' placeholder="To">
                 </div>
             </div>
             <div class='column'>
@@ -81,9 +81,9 @@
             <div class='section_header'>
                 <p>This is what the <b>International Air Transport Association (IATA)</b> says:</p>
             </div>
-            <div class='side_by_side'>
+            <div class='side_by_side' id='iata_cards'>
 
-                <div class='column iata_message'>
+                <div class='column iata_message' id='iata_message_origin'>
                     <p class='iata_header' id='origin_header'>
                         Can you come back to {{origin}}?
                     </p>
@@ -193,23 +193,22 @@
             });
         });
 
-        // passing in `null` for the `options` arguments will result in the default
-        // options being used
-        $('#prefetch .typeahead').typeahead(null, {
-            source: countries
-        });
-
         var urlParams = new URLSearchParams(window.location.search);
         var origin = urlParams.get('from');
         var destination = urlParams.get('to');
 
-        if (origin == '') {
-            $('#origin_header').text('')
-        }
-
         if (destination == '') {
             $('#destination_header').text('')
         }
+
+        // passing in `null` for the `options` arguments will result in the default
+        // options being used
+        $('#input_from .typeahead').typeahead(null, {
+            source: countries
+        });
+        $('#input_to .typeahead').typeahead(null, {
+            source: countries
+        });
 
         // Your web app's Firebase configuration
         var firebaseConfig = {
@@ -230,6 +229,37 @@
             var errorMessage = error.message;
         });
 
+        function update_destination(db) {
+            db.collection("countries").doc(destination).get().then(function (doc) {
+                if (doc.exists) {
+                    $('#destination_updates').empty().append(doc.data().message)
+                    date_published = `No changes since ${doc.data().date_f}`
+                    $('#date_destination').append(date_published)
+                } else {
+                    // doc.data() will be undefined in this case
+                    $('#destination_updates').text(`Invalid request. Did you insert a valid Destination?`)
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+        }
+
+        function update_origin(db) {
+            db.collection("countries").doc(origin).get().then(function (doc) {
+                if (doc.exists) {
+                    $('#origin_updates').empty().append(doc.data().message)
+                    date_published = `No changes since ${doc.data().date_f}`
+                    $('#date_origin').append(date_published)
+                } else {
+                    // doc.data() will be undefined in this case
+                    $('#origin_updates').text(`Invalid request. Did you insert a valid Destination?`)
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+
+        }
+
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
 
@@ -238,31 +268,39 @@
                 var uid = user.uid;
 
                 var db = firebase.firestore();
-                
-                db.collection("countries").doc('{{destination}}').get().then(function (doc) {
-                    if (doc.exists) {
-                        $('#destination_updates').empty().append(doc.data().message)
-                        date_published = `No changes since ${doc.data().date_f}`
-                        $('#date_destination').append(date_published)
-                    } else {
-                        // doc.data() will be undefined in this case
-                        $('#destination_updates').text(`Invalid request. Did you insert a valid Destination?`)
-                    }
-                }).catch(function (error) {
-                    console.log("Error getting document:", error);
-                });
-                db.collection("countries").doc('{{origin}}').get().then(function (doc) {
-                    if (doc.exists) {
-                        $('#origin_updates').empty().append(doc.data().message)
-                        date_published = `No changes since ${doc.data().date_f}`
-                        $('#date_origin').append(date_published)
-                    } else {
-                        // doc.data() will be undefined in this case
-                        $('#origin_updates').text(`Invalid request. Did you insert a valid Origin for your travel?`)
-                    }
-                }).catch(function (error) {
-                    console.log("Error getting document:", error);
-                });
+
+                if (destination == '') {
+                    destination='____'
+                }
+                update_destination(db);
+
+
+                if (origin == '') {
+                    $('#iata_message_origin').empty()
+                    $('#iata_message_origin').append(
+                        $(`
+                            <br>
+                            <br>
+                            <p id='query_origin_header' class='iata_header'>Tell us where you're flying from...</p>
+                            <p class='iata_updates'>Make sure that you can return home after your flight.<br></p>
+                            <form id='fromto' action="./od" class='query'>
+                                <div id='input_origin' class='column'>
+                                    <input class='typeahead' type="text" name='from' placeholder='From'>
+                                </div>
+                                <input type="hidden" value=${destination} name='to' >
+                                <div class='column'>
+                                    <input class='go_btn' id='origin_check' type='submit' value='Check'>
+                                </div>
+                            </form>`
+                        )
+                    )
+                    $('#input_origin .typeahead').typeahead(null, {
+                        source: countries
+                    });
+                }
+                else {
+                    update_origin(db);
+                }
 
             } else {
                 // User is signed out.

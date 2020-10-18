@@ -1,11 +1,13 @@
 .query {
-    padding: 30px;
-    background-color: white;
-}
-
-.query #fromto{
     display: flex;
     flex-wrap: wrap;
+}
+
+#query_origin{
+    justify-content: left;
+}
+
+#fromto{
     justify-content: center;
 }
 
@@ -15,7 +17,7 @@
 
 .go_btn {
     width: 80px;
-    min-height: 40px;
+    min-height: 50px;
     height: 100%;
     margin-left: 10px;
     background-color: rgb(175, 209, 231);
