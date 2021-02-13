@@ -46,54 +46,25 @@
 </head>
 
 <body>
-
     <div class='landing'>
         <span class="title">
-            COVID Travel Restrictions
+            Thank You
         </span>
-        <div class="spacing"></div>
-        <span class="subtitle">
-            Find out which countries you can fly to right now. Updated hourly.
-        </span>
-        <div class='query'>
-            <form id='fromto' action="./od">
-                <div class='from column'>
-                    <div id="prefetch">
-                        <input id='input_from' class="typeahead" type="text" name='from' placeholder="From">
-                    </div>
-                </div>
-                <div class='to column'>
-                    <div id="prefetch">
-                        <input id='input_to' class="typeahead" type="text" name='to' placeholder="To">
-                    </div>
-                </div>
-                <div class='column'>
-                    <input class='go_btn' type="submit" value="Check">
-                </div>
-            </form>
-        </div>
+        <p class="subtitle">
+            <br>
+            Unfortunately our service has come to an end. <span style= "font-style: normal;">&#x1F641;</span>
+            <br><br>
+            In the past year, we have helped thousands of you find flights and travel with peace of mind, and we are so proud to have served you at such a difficult time.
+            <br><br>
+            To continue receiving up-to-date travel information, we recommend the <a href='https://www.iatatravelcentre.com/world.php'>official IATA website</a>.
+            <br><br>
+            Thank you for your support.
+            <br><br>
+            Sincerely,
+            <br>
+            <span style='text-align: right !important;'>- The Flight Checker Team&nbsp;&nbsp;&nbsp;</span><span style= "font-style: normal;">&#128745;</span>
+        </p>
     </div>
-
-    <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-    <script src="" async defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.min.js"></script>
-    <script>
-
-        var countries = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: 'data/country_list.json'
-        });
-
-        $('#prefetch .typeahead').typeahead(null, {
-            source: countries
-        });
-
-    </script>
 </body>
 
 </html>
